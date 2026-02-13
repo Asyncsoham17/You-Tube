@@ -1,0 +1,27 @@
+{
+  "name": "you-tube",
+  "version": "1.0.0",
+  "description": "YouTube",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev" : "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Asyncsoham17/You-Tube.git"
+  },
+  "keywords": [
+    "javascript",
+    "backend"
+  ],
+  "author": "soham",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Asyncsoham17/You-Tube/issues"
+  },
+  "homepage": "https://github.com/Asyncsoham17/You-Tube#readme",
+  "dependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
