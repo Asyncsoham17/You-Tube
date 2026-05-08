@@ -5,6 +5,8 @@ import connectDB from "./db/index.js";
 
 dotenv.config();
 
+const app = express();
+
 
 
 
@@ -15,8 +17,6 @@ connectDB ()
   })
 })
 .catch((error) =>{
-  console.log("MongDb connection failed !!" , err)
-  
-}
+  console.log("MongDb connection failed !!", error)
 
-)
+})
