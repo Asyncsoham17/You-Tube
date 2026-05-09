@@ -7,3 +7,5 @@ class ApiResponse {
         this.success < 400
     }
 }
+
+export {ApiResponse}
