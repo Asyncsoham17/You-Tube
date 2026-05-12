@@ -69,6 +69,7 @@ UserSchema.methods.generateAccessToken = function ()
 {
    jwt.sign(
     {
+    _id : this._id,
     fullname : this.fullname,
     email : this.email,
     username : this.username
@@ -83,6 +84,9 @@ UserSchema.methods.generateAccessToken = function ()
 UserSchema.methods.generateRefreshToken = function ()
 {
 jwt.sign(
+    {
+        _id : this._id,
+    },
     {
     email : this.email,
     },

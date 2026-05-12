@@ -3,6 +3,25 @@ import {ApiError} from "../utils/ApiError.js"
 import { User } from "../models/user.model.js";
 import {uploadoncloudinary} from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+
+
+const getAccessAndRefreshTokens = async(userId) =>{
+
+    try {
+        const user = await User.findById(userId)
+       const AccessToken = user.generateAccessToken()
+       const RefreshToken = user.generateRefreshToken()
+
+       user.RefreshToken = RefreshToken
+       await   user.save({ValidateBeforeSave : false})
+
+       return {AccessToken , RefreshToken}
+    } catch (error) {
+        throw new ApiError(404 , "something went wrong while generating the Access and Refresh Tokens")
+    }
+}
+
+
 const registerUser = asyncandler(async(req,res) => {
 res.status(200).json({
     Message : "ok"
@@ -19,7 +38,7 @@ field?.trim() === ""
     
 }
 
-const existeduser = User.findOne({
+const existeduser =await User.findOne({
     $or:[{username} , {fullname}]
 })
 
@@ -56,9 +75,54 @@ return res.status(201).json(
 )
 })
 
+const loginUser = asyncandler(async(req , res) =>{
 
+    const {email , username , password} = req.body
+
+    if(!email || !username){
+        throw new ApiError(400 , "email and username is required")
+    }
+
+    const user = user.findOne({
+        $or :[{username}, {email}]
+    })
+
+    if(!user){
+        throw new ApiError(404 , "user does not existed")
+    }
+
+    const isPasswordValid = await user.isPasswordCorrect(password)
+
+    if(!isPasswordValid){
+        throw new ApiError(404 , "password is not valid")
+    }
+
+    const option = {
+        httpOnly = true,
+        secure = true
+    }
+
+    return res.
+    status(200)
+    .cookie("AccessToken" , AccessToken ,Options )
+    .cookie("RefreshToken" , RefreshToken , Options)
+    .json(
+        new ApiResponse(
+        200,{
+           user : loginUser , AccessToken , RefreshToken
+        },
+        "user loggedin successfully"
+        )
+    )
+})
+
+const logoutUser = asyncandler(async(req,res) =>{
+
+})
 export {
     registerUser,
+    loginUser,
+    logoutUser
 }
 
 
